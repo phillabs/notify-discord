@@ -1,6 +1,6 @@
 name: Reusable Discord Notification
 
-# Define this as a reusable workflow
+# Define this as a reusable workflow ##
 on:
   workflow_call:
     inputs:
