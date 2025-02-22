@@ -1,0 +1,24 @@
+name: Discord Notification
+
+on:
+  # Trigger on push events
+  push:
+    branches: [ main ]
+  # Trigger on pull request events
+  pull_request:
+    branches: [ main ]
+  # You can add more triggers as needed
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Discord Notification
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        uses: Ilshidur/action-discord@master
+        with:
+          args: 'A new ${{ github.event_name }} event occurred on ${{ github.repository }}'
