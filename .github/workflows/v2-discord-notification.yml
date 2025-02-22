@@ -21,10 +21,8 @@ jobs:
         uses: Ilshidur/action-discord@master
         with:
           args: |
-            📢 **New ${{ github.event_name }} on ${{ github.repository }}**
-            
+            📢 **New ${{ github.event_name }} on ${{ github.repository }}**            
             👤 **Author:** ${{ github.actor }}
             🌿 **Branch:** ${{ github.ref }}
             📝 **Commit:** ${{ github.event.head_commit.message }}
-            
             🔗 **Link:** ${{ github.event.head_commit.url }}
