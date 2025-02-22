@@ -1,0 +1,54 @@
+name: Reusable Discord Notification
+
+# Define this as a reusable workflow
+on:
+  workflow_call:
+    inputs:
+      message:
+        required: true
+        type: string
+        description: "Message to send to Discord"
+      title:
+        required: false
+        type: string
+        default: "GitHub Notification"
+        description: "Title of the message"
+      color:
+        required: false
+        type: string
+        default: "0000FF"
+        description: "Color of the embed message"
+    secrets:
+      DISCORD_WEBHOOK:
+        required: true
+        description: "Discord webhook URL"
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Discord Notification
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fetch = require('node-fetch');
+            
+            const embed = {
+              title: '${{ inputs.title }}',
+              description: '${{ inputs.message }}',
+              color: parseInt('${{ inputs.color }}', 16),
+              timestamp: new Date(),
+              footer: {
+                text: 'GitHub Action Notification'
+              }
+            };
+            
+            await fetch('${{ secrets.DISCORD_WEBHOOK }}', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                embeds: [embed]
+              })
+            });

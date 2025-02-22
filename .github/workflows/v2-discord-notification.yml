@@ -1,0 +1,30 @@
+name: Discord Notification
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Discord Notification
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          DISCORD_USERNAME: GitHub Bot
+          DISCORD_AVATAR: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
+        uses: Ilshidur/action-discord@master
+        with:
+          args: |
+            📢 **New ${{ github.event_name }} on ${{ github.repository }}**
+            
+            👤 **Author:** ${{ github.actor }}
+            🌿 **Branch:** ${{ github.ref }}
+            📝 **Commit:** ${{ github.event.head_commit.message }}
+            
+            🔗 **Link:** ${{ github.event.head_commit.url }}
